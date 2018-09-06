@@ -64,6 +64,18 @@ blank and `encrypted` is set to \"true\", Terraform will use the default `aws/el
 # EFS Mount Target Core Options
 ###############################
 
+variable "mount_target_subnets" {
+  description = "Subnets in which the EFS mount target will be created."
+  type        = "list"
+  default     = []
+}
+
+variable "mount_target_subnets_count" {
+  description = "Number of `mount_target_subnets` (workaround for `count` not working fully within modules)"
+  type        = "string"
+  default     = "0"
+}
+
 variable "vpc_id" {
   description = "The VPC ID."
   type        = "string"

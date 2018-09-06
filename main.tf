@@ -16,6 +16,14 @@ resource "aws_efs_file_system" "fs" {
   tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
 }
 
+resource "aws_efs_mount_target" "mnt" {
+  count = "${var.mount_target_subnets_count}"
+
+  file_system_id  = "${aws_efs_file_system.fs.id}"
+  subnet_id       = "${element(var.mount_target_subnets, count.index)}"
+  security_groups = ["${aws_security_group.mnt.id}"]
+}
+
 resource "aws_security_group" "mnt" {
   name        = "${var.name}"
   description = "Security group dedicated to the ${var.name} EFS mount target."
@@ -43,4 +51,3 @@ resource "aws_security_group_rule" "mnt_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.mnt.id}"
 }
-
