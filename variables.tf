@@ -59,3 +59,24 @@ blank and `encrypted` is set to \"true\", Terraform will use the default `aws/el
   type    = "string"
   default = ""
 }
+
+###############################
+# EFS Mount Target Core Options
+###############################
+
+variable "vpc_id" {
+  description = "The VPC ID."
+  type        = "string"
+}
+
+variable "mnt_ingress_security_groups" {
+  description = "List of security group IDs that should be granted ingress for the EFS mount target."
+  type        = "list"
+  default     = []
+}
+
+variable "mnt_ingress_security_groups_count" {
+  description = "Number of `mnt_ingress_security_groups` (workaround for `count` not working fully within modules)"
+  type        = "string"
+  default     = "0"
+}

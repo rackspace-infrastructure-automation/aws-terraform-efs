@@ -15,3 +15,32 @@ resource "aws_efs_file_system" "fs" {
 
   tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
 }
+
+resource "aws_security_group" "mnt" {
+  name        = "${var.name}"
+  description = "Security group dedicated to the ${var.name} EFS mount target."
+  vpc_id      = "${var.vpc_id}"
+
+  tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
+}
+
+resource "aws_security_group_rule" "mnt_ingress" {
+  count = "${var.mnt_ingress_security_groups_count}"
+
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 2049
+  to_port                  = 2049
+  security_group_id        = "${aws_security_group.mnt.id}"
+  source_security_group_id = "${element(var.mnt_ingress_security_groups, count.index)}"
+}
+
+resource "aws_security_group_rule" "mnt_egress" {
+  type              = "egress"
+  protocol          = -1
+  from_port         = 0
+  to_port           = 0
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.mnt.id}"
+}
+
