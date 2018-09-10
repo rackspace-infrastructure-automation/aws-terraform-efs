@@ -54,7 +54,7 @@ variable "kms_key_arn" {
   description = <<EOF
 The ARN for the KMS key to use for encrypting the disk. If specified, `encrypted` must be set to \"true\"`. If left
 blank and `encrypted` is set to \"true\", Terraform will use the default `aws/elasticfilesystem` KMS key.
- EOF
+EOF
 
   type    = "string"
   default = ""
