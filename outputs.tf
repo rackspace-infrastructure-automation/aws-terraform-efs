@@ -39,3 +39,13 @@ output "mount_target_security_group_id" {
   value       = "${aws_security_group.mnt.id}"
   description = "ID of the security group created for the EFS mount target"
 }
+
+#######################
+# Conditional Resources
+#######################
+
+output "mount_target_internal_r53_record" {
+  value       = "${aws_route53_record.efs.*.fqdn}"
+  description = "Internal Route 53 record FQDN for the EFS mount target"
+}
+

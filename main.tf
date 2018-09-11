@@ -51,3 +51,13 @@ resource "aws_security_group_rule" "mnt_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.mnt.id}"
 }
+
+resource "aws_route53_record" "efs" {
+  count = "${var.create_internal_dns_record ? 1 : 0}"
+
+  zone_id = "${var.internal_zone_id}"
+  name    = "${var.internal_record_name != "" ? var.internal_record_name : "efs-${var.name}-${var.environment}"}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_efs_file_system.fs.dns_name}"]
+}

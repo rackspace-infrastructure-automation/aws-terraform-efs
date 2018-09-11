@@ -92,3 +92,37 @@ variable "mnt_ingress_security_groups_count" {
   type        = "string"
   default     = "0"
 }
+
+#######################
+# Conditional Resources
+#######################
+
+variable "create_internal_dns_record" {
+  description = <<EOF
+Whether or not to create a custom, internal DNS record for the EFS endpoint's generated DNS name. If \"true\", the
+`internal_zone_id` MUST be provided, and a specific `internal_record_name` MAY be provided. Default is \"false\".
+EOF
+
+  type    = "string"
+  default = "false"
+}
+
+variable "internal_zone_id" {
+  description = <<EOF
+A Route 53 Internal Hosted Zone ID. If provided, a DNS record will be created for the EFS endpoint's DNS name, which
+can be used to reference the mount target.
+EOF
+
+  type    = "string"
+  default = ""
+}
+
+variable "internal_record_name" {
+  description = <<EOF
+If `internal_zone_id` is provided, Terraform will create a DNS record using the provided `internal_record_name` as the
+subdomain. If no `internal_record_name` is provided, the convention \"efs-<name>-<environment>\" will be used.
+EOF
+
+  type    = "string"
+  default = ""
+}
