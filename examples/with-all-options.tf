@@ -14,6 +14,11 @@ resource "aws_kms_key" "efs-test-with-all-options" {
   deletion_window_in_days = 7
 }
 
+resource "aws_route53_zone" "internal" {
+  name   = "efstest"
+  vpc_id = "${module.vpc.vpc_id}"
+}
+
 module "efs" {
   source = "github.com/rackspace-infrastructure-automation/aws-terraform-efs//?ref=<specify_version_here>"
 
@@ -34,4 +39,8 @@ module "efs" {
 
   mount_target_subnets       = ["${module.vpc.private_subnets}"]
   mount_target_subnets_count = 2
+
+  create_ssm_parameters      = "false"
+  create_internal_dns_record = "true"
+  internal_zone_id           = "${aws_route53_zone.internal.zone_id}"
 }

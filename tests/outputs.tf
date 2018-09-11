@@ -39,3 +39,22 @@ output "mount_target_security_group_id" {
   value       = "${module.efs.mount_target_security_group_id}"
   description = "ID of the security group created for the EFS mount target"
 }
+
+#######################
+# Conditional Resources
+#######################
+
+output "mount_target_internal_r53_record" {
+  value       = "${module.efs.mount_target_internal_r53_record}"
+  description = "Internal Route 53 record FQDN for the EFS mount target"
+}
+
+output "filesystem_id_ssm_parameter" {
+  value       = "${module.efs.filesystem_id_ssm_parameter}"
+  description = "Name of the SSM parameter containing the captured filesystem ID"
+}
+
+output "filesystem_dns_name_ssm_parameter" {
+  value       = "${module.efs.filesystem_dns_name_ssm_parameter}"
+  description = "Name of the SSM parameter containing the captured filesystem DNS name"
+}
