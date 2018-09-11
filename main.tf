@@ -61,3 +61,19 @@ resource "aws_route53_record" "efs" {
   ttl     = "300"
   records = ["${aws_efs_file_system.fs.dns_name}"]
 }
+
+resource "aws_ssm_parameter" "efs_filesystem_id" {
+  count = "${var.create_ssm_parameters ? 1 : 0}"
+
+  name  = "/${var.environment}/${var.name}/efs/filesystem_id"
+  type  = "String"
+  value = "${aws_efs_file_system.fs.id}"
+}
+
+resource "aws_ssm_parameter" "efs_fqdn" {
+  count = "${var.create_ssm_parameters ? 1 : 0}"
+
+  name  = "/${var.environment}/${var.name}/efs/fqdn"
+  type  = "String"
+  value = "${aws_efs_file_system.fs.dns_name}"
+}

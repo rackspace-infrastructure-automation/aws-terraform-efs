@@ -97,6 +97,12 @@ variable "mnt_ingress_security_groups_count" {
 # Conditional Resources
 #######################
 
+variable "create_ssm_parameters" {
+  description = "Whether or not to create SSM Parameters to expose the EFS DNS name and Filesystem ID."
+  type        = "string"
+  default     = "true"
+}
+
 variable "create_internal_dns_record" {
   description = <<EOF
 Whether or not to create a custom, internal DNS record for the EFS endpoint's generated DNS name. If \"true\", the

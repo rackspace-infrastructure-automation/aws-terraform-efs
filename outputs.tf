@@ -49,3 +49,12 @@ output "mount_target_internal_r53_record" {
   description = "Internal Route 53 record FQDN for the EFS mount target"
 }
 
+output "filesystem_id_ssm_parameter" {
+  value       = "${aws_ssm_parameter.efs_filesystem_id.*.name}"
+  description = "Name of the SSM parameter containing the captured filesystem ID"
+}
+
+output "filesystem_dns_name_ssm_parameter" {
+  value       = "${aws_ssm_parameter.efs_fqdn.*.name}"
+  description = "Name of the SSM parameter containing the captured filesystem DNS name"
+}
