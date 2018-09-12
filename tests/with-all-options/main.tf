@@ -40,7 +40,7 @@ module "efs" {
   mount_target_subnets       = ["${module.vpc.private_subnets}"]
   mount_target_subnets_count = 2
 
-  create_ssm_parameters      = "false"
-  create_internal_dns_record = "true"
-  internal_zone_id           = "${aws_route53_zone.internal.zone_id}"
+  create_parameter_store_entries = "false"
+  create_internal_dns_record     = "true"
+  internal_zone_id               = "${aws_route53_zone.internal.zone_id}"
 }

@@ -13,7 +13,7 @@ By default, only the `name` and `vpc_id` are required to be set in order to crea
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | create_internal_dns_record | Whether or not to create a custom, internal DNS record for the EFS endpoint's generated DNS name. If \"true\", the `internal_zone_id` MUST be provided, and a specific `internal_record_name` MAY be provided. Default is \"false\". | string | `false` | no |
-| create_ssm_parameters | Whether or not to create SSM Parameters to expose the EFS DNS name and Filesystem ID. | string | `true` | no |
+| create_parameter_store_entries | Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID. | string | `true` | no |
 | custom_tags | Optional tags to be applied on top of the base tags on all resources | map | `<map>` | no |
 | encrypted | Whether or not the disk should be encrypted. | string | `true` | no |
 | environment | Application environment for which this network is being created. e.g. Development/Production | string | `Development` | no |

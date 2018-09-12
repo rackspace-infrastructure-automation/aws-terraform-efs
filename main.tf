@@ -63,7 +63,7 @@ resource "aws_route53_record" "efs" {
 }
 
 resource "aws_ssm_parameter" "efs_filesystem_id" {
-  count = "${var.create_ssm_parameters ? 1 : 0}"
+  count = "${var.create_parameter_store_entries ? 1 : 0}"
 
   name  = "/${var.environment}/${var.name}/efs/filesystem_id"
   type  = "String"
@@ -71,7 +71,7 @@ resource "aws_ssm_parameter" "efs_filesystem_id" {
 }
 
 resource "aws_ssm_parameter" "efs_fqdn" {
-  count = "${var.create_ssm_parameters ? 1 : 0}"
+  count = "${var.create_parameter_store_entries ? 1 : 0}"
 
   name  = "/${var.environment}/${var.name}/efs/fqdn"
   type  = "String"

@@ -97,8 +97,8 @@ variable "mnt_ingress_security_groups_count" {
 # Conditional Resources
 #######################
 
-variable "create_ssm_parameters" {
-  description = "Whether or not to create SSM Parameters to expose the EFS DNS name and Filesystem ID."
+variable "create_parameter_store_entries" {
+  description = "Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID."
   type        = "string"
   default     = "true"
 }
