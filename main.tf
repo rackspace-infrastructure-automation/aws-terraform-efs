@@ -19,15 +19,15 @@ resource "aws_efs_file_system" "fs" {
   tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
 }
 
-resource "aws_efs_mount_target" "mnt" {
+resource "aws_efs_mount_target" "mount" {
   count = "${var.mount_target_subnets_count}"
 
   file_system_id  = "${aws_efs_file_system.fs.id}"
   subnet_id       = "${element(var.mount_target_subnets, count.index)}"
-  security_groups = ["${aws_security_group.mnt.id}"]
+  security_groups = ["${aws_security_group.mount.id}"]
 }
 
-resource "aws_security_group" "mnt" {
+resource "aws_security_group" "mount" {
   name        = "${var.name}"
   description = "Security group dedicated to the ${var.name} EFS mount target."
   vpc_id      = "${var.vpc_id}"
@@ -35,24 +35,24 @@ resource "aws_security_group" "mnt" {
   tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
 }
 
-resource "aws_security_group_rule" "mnt_ingress" {
-  count = "${var.mnt_ingress_security_groups_count}"
+resource "aws_security_group_rule" "mount_ingress" {
+  count = "${var.mount_ingress_security_groups_count}"
 
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 2049
   to_port                  = 2049
-  security_group_id        = "${aws_security_group.mnt.id}"
-  source_security_group_id = "${element(var.mnt_ingress_security_groups, count.index)}"
+  security_group_id        = "${aws_security_group.mount.id}"
+  source_security_group_id = "${element(var.mount_ingress_security_groups, count.index)}"
 }
 
-resource "aws_security_group_rule" "mnt_egress" {
+resource "aws_security_group_rule" "mount_egress" {
   type              = "egress"
   protocol          = -1
   from_port         = 0
   to_port           = 0
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.mnt.id}"
+  security_group_id = "${aws_security_group.mount.id}"
 }
 
 locals {

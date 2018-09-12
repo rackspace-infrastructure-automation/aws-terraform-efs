@@ -81,14 +81,14 @@ variable "vpc_id" {
   type        = "string"
 }
 
-variable "mnt_ingress_security_groups" {
+variable "mount_ingress_security_groups" {
   description = "List of security group IDs that should be granted ingress for the EFS mount target."
   type        = "list"
   default     = []
 }
 
-variable "mnt_ingress_security_groups_count" {
-  description = "Number of `mnt_ingress_security_groups` (workaround for `count` not working fully within modules)"
+variable "mount_ingress_security_groups_count" {
+  description = "Number of `mount_ingress_security_groups` (workaround for `count` not working fully within modules)"
   type        = "string"
   default     = "0"
 }
