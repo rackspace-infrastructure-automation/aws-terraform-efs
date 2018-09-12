@@ -19,6 +19,14 @@ resource "aws_route53_zone" "internal" {
   vpc_id = "${module.vpc.vpc_id}"
 }
 
+resource "aws_sns_topic" "efs_burst_alarm" {
+  name = "EFS-with-all-options_ALARM"
+}
+
+resource "aws_sns_topic" "efs_burst_ok" {
+  name = "EFS-with-all-options_OK"
+}
+
 module "efs" {
   source = "github.com/rackspace-infrastructure-automation/aws-terraform-efs//?ref=<specify_version_here>"
 
@@ -43,4 +51,8 @@ module "efs" {
   create_parameter_store_entries = "false"
   create_internal_dns_record     = "true"
   internal_zone_id               = "${aws_route53_zone.internal.zone_id}"
+
+  rackspace_managed      = "false"
+  custom_alarm_sns_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
+  custom_ok_sns_topic    = ["${aws_sns_topic.efs_burst_ok.arn}"]
 }

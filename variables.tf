@@ -93,6 +93,44 @@ variable "mnt_ingress_security_groups_count" {
   default     = "0"
 }
 
+################################
+# CloudWatch Alarms Core Options
+################################
+
+variable "cw_burst_credit_period" {
+  description = "The number of periods over which the EFS Burst Credit level is compared to the specified threshold."
+  type        = "string"
+  default     = "12"
+}
+
+variable "cw_burst_credit_threshold" {
+  description = "The minimum EFS Burst Credit level before generating an alarm."
+  type        = "string"
+  default     = "1000000000000"
+}
+
+variable "rackspace_managed" {
+  description = <<EOF
+Whether or not the filesystem will be managed by Rackspace support teams and create CloudWatch alarms that generate
+support tickets.
+EOF
+
+  type    = "string"
+  default = "true"
+}
+
+variable "custom_alarm_sns_topic" {
+  description = "If not Rackspace managed, you can use custom SNS topics to send the Alarm actions to."
+  type        = "list"
+  default     = []
+}
+
+variable "custom_ok_sns_topic" {
+  description = "If not Rackspace managed, you can use custom SNS topics to send the OK actions to."
+  type        = "list"
+  default     = []
+}
+
 #######################
 # Conditional Resources
 #######################
