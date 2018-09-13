@@ -6,7 +6,7 @@ This module sets up a basic Elastic File System on AWS for an account in a speci
 
 ## Default Resources
 
-By default, only the `name` and `vpc_id` are required to be set in order to create the filesystem; however, the `mount_target_subnets` and `mnt_ingress_security_groups` need to be configured in order for the filesystem to actually be usable.
+By default, only the `name` and `vpc_id` are required to be set in order to create the filesystem; however, the `mount_target_subnets` and `mount_ingress_security_groups` need to be configured in order for the filesystem to actually be usable.
 
 ## Inputs
 
@@ -20,8 +20,8 @@ By default, only the `name` and `vpc_id` are required to be set in order to crea
 | internal_record_name | If `internal_zone_id` is provided, Terraform will create a DNS record using the provided `internal_record_name` as the subdomain. If no `internal_record_name` is provided, the convention \"efs-<name>-<environment>\" will be used. | string | `` | no |
 | internal_zone_id | A Route 53 Internal Hosted Zone ID. If provided, a DNS record will be created for the EFS endpoint's DNS name, which can be used to reference the mount target. | string | `` | no |
 | kms_key_arn | The ARN for the KMS key to use for encrypting the disk. If specified, `encrypted` must be set to \"true\"`. If left blank and `encrypted` is set to \"true\", Terraform will use the default `aws/elasticfilesystem` KMS key. | string | `` | no |
-| mnt_ingress_security_groups | List of security group IDs that should be granted ingress for the EFS mount target. | list | `<list>` | no |
-| mnt_ingress_security_groups_count | Number of `mnt_ingress_security_groups` (workaround for `count` not working fully within modules) | string | `0` | no |
+| mount_ingress_security_groups | List of security group IDs that should be granted ingress for the EFS mount target. | list | `<list>` | no |
+| mount_ingress_security_groups_count | Number of `mount_ingress_security_groups` (workaround for `count` not working fully within modules) | string | `0` | no |
 | mount_target_subnets | Subnets in which the EFS mount target will be created. | list | `<list>` | no |
 | mount_target_subnets_count | Number of `mount_target_subnets` (workaround for `count` not working fully within modules) | string | `0` | no |
 | name | A unique name (a maximum of 64 characters are allowed) used as reference when creating the Elastic File System to ensure idempotent file system creation. | string | - | yes |

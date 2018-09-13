@@ -42,8 +42,8 @@ module "efs" {
 
   vpc_id = "${module.vpc.vpc_id}"
 
-  mnt_ingress_security_groups       = ["${module.vpc.default_sg}"]
-  mnt_ingress_security_groups_count = 1
+  mount_ingress_security_groups       = ["${module.vpc.default_sg}"]
+  mount_ingress_security_groups_count = 1
 
   mount_target_subnets       = ["${module.vpc.private_subnets}"]
   mount_target_subnets_count = 2

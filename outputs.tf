@@ -17,17 +17,17 @@ output "filesystem_dns_name" {
 ##########################
 
 output "mount_target_id" {
-  value       = "${aws_efs_mount_target.mnt.*.id}"
+  value       = "${aws_efs_mount_target.mount.*.id}"
   description = "The ID of the mount target"
 }
 
 output "mount_target_dns_name" {
-  value       = "${aws_efs_mount_target.mnt.*.dns_name}"
+  value       = "${aws_efs_mount_target.mount.*.dns_name}"
   description = "The DNS name for the mount target in a given subnet/AZ"
 }
 
 output "mount_target_network_interface_id" {
-  value       = "${aws_efs_mount_target.mnt.*.network_interface_id}"
+  value       = "${aws_efs_mount_target.mount.*.network_interface_id}"
   description = "The ID of the network interface automatically created for the mount target"
 }
 
@@ -36,7 +36,7 @@ output "mount_target_network_interface_id" {
 #########################################
 
 output "mount_target_security_group_id" {
-  value       = "${aws_security_group.mnt.id}"
+  value       = "${aws_security_group.mount.id}"
   description = "ID of the security group created for the EFS mount target"
 }
 
