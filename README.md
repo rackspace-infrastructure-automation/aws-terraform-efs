@@ -14,7 +14,11 @@ By default, only the `name` and `vpc_id` are required to be set in order to crea
 |------|-------------|:----:|:-----:|:-----:|
 | create_internal_dns_record | Whether or not to create a custom, internal DNS record for the EFS endpoint's generated DNS name. If \"true\", the `internal_zone_id` MUST be provided, and a specific `internal_record_name` MAY be provided. Default is \"false\". | string | `false` | no |
 | create_parameter_store_entries | Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID. | string | `true` | no |
+| custom_alarm_sns_topic | If not Rackspace managed, you can use custom SNS topics to send the Alarm actions to. | list | `<list>` | no |
+| custom_ok_sns_topic | If not Rackspace managed, you can use custom SNS topics to send the OK actions to. | list | `<list>` | no |
 | custom_tags | Optional tags to be applied on top of the base tags on all resources | map | `<map>` | no |
+| cw_burst_credit_period | The number of periods over which the EFS Burst Credit level is compared to the specified threshold. | string | `12` | no |
+| cw_burst_credit_threshold | The minimum EFS Burst Credit level before generating an alarm. | string | `1000000000000` | no |
 | encrypted | Whether or not the disk should be encrypted. | string | `true` | no |
 | environment | Application environment for which this network is being created. e.g. Development/Production | string | `Development` | no |
 | internal_record_name | If `internal_zone_id` is provided, Terraform will create a DNS record using the provided `internal_record_name` as the subdomain. If no `internal_record_name` is provided, the convention \"efs-<name>-<environment>\" will be used. | string | `` | no |
@@ -27,6 +31,7 @@ By default, only the `name` and `vpc_id` are required to be set in order to crea
 | name | A unique name (a maximum of 64 characters are allowed) used as reference when creating the Elastic File System to ensure idempotent file system creation. | string | - | yes |
 | performance_mode | The file system performance mode. Can be either "generalPurpose" or "maxIO". | string | `generalPurpose` | no |
 | provisioned_throughput_in_mibps | The throughput, measured in MiB/s, that you want to provision for the file system. **NOTE**: Setting a non-zero value will automatically enable \"provisioned\" throughput mode. To use \"bursting\" `throughput mode, leave this value set to \"0\". | string | `0` | no |
+| rackspace_managed | Whether or not the filesystem will be managed by Rackspace support teams and create CloudWatch alarms that generate support tickets. | string | `true` | no |
 | vpc_id | The VPC ID. | string | - | yes |
 
 ## Outputs
