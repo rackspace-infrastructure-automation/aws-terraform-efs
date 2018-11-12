@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "github.com/rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.2"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.2"
 
   vpc_name = "EFSTest-minimal-options-unencrypted-1VPC"
 }
