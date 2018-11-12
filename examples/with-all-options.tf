@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "github.com/rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.2"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.2"
 
   vpc_name = "EFSTest-with-all-options"
 }
@@ -28,7 +28,7 @@ resource "aws_sns_topic" "efs_burst_ok" {
 }
 
 module "efs" {
-  source = "github.com/rackspace-infrastructure-automation/aws-terraform-efs//?ref=<specify_version_here>"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=<specify_version_here>"
 
   name                            = "EFSTest-with-all-options"
   performance_mode                = "maxIO"
