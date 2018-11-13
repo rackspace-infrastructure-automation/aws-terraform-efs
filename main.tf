@@ -79,7 +79,7 @@ locals {
 }
 
 resource "aws_cloudwatch_metric_alarm" "efs_burst_credits" {
-  alarm_name          = "EFSBurstCredits"
+  alarm_name          = "${var.name}-EFSBurstCredits"
   alarm_description   = "EFS Burst Credits have dropped below ${var.cw_burst_credit_threshold} for ${var.cw_burst_credit_period} periods."
   namespace           = "AWS/EFS"
   period              = "3600"
