@@ -1,3 +1,24 @@
+/**
+ * # aws-terraform-efs
+ *
+ *This module sets up a basic Elastic File System on AWS for an account in a specific region.
+ *
+ *## Basic Usage
+ *
+ *```
+ *module "efs" {
+ *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.4"
+ *
+ *  name      = "EFSTest-minimal-options-unencrypted"
+ *  encrypted = "false"
+ *
+ *  vpc_id = "${module.vpc.vpc_id}"
+ *}
+ *```
+ *
+ * Full working references are available at [examples](examples)
+ */
+
 data "aws_region" "current_region" {}
 data "aws_caller_identity" "current_account" {}
 
