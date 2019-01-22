@@ -3,10 +3,18 @@ provider "aws" {
   region  = "us-west-2"
 }
 
+resource "random_string" "res_name" {
+  length  = 8
+  upper   = false
+  lower   = true
+  special = false
+  number  = false
+}
+
 module "vpc" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=master"
 
-  vpc_name = "EFSTest-with-all-options"
+  vpc_name = "EFSTest-with-all-options-${random_string.res_name.result}"
 }
 
 resource "aws_kms_key" "efs-test-with-all-options" {
@@ -15,22 +23,21 @@ resource "aws_kms_key" "efs-test-with-all-options" {
 }
 
 resource "aws_route53_zone" "internal" {
-  name   = "efstest"
-  vpc_id = "${module.vpc.vpc_id}"
+  name = "efstest-${random_string.res_name.result}"
+
+  vpc = {
+    vpc_id = "${module.vpc.vpc_id}"
+  }
 }
 
 resource "aws_sns_topic" "efs_burst_alarm" {
-  name = "EFS-with-all-options_ALARM"
-}
-
-resource "aws_sns_topic" "efs_burst_ok" {
-  name = "EFS-with-all-options_OK"
+  name = "EFS-with-all-options-${random_string.res_name.result}"
 }
 
 module "efs" {
   source = "../../module"
 
-  name                            = "EFSTest-with-all-options"
+  name                            = "EFSTest-with-all-options-${random_string.res_name.result}"
   performance_mode                = "maxIO"
   provisioned_throughput_in_mibps = "1"
   encrypted                       = "true"
@@ -52,7 +59,6 @@ module "efs" {
   create_internal_dns_record     = "true"
   internal_zone_id               = "${aws_route53_zone.internal.zone_id}"
 
-  rackspace_managed      = "false"
-  custom_alarm_sns_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
-  custom_ok_sns_topic    = ["${aws_sns_topic.efs_burst_ok.arn}"]
+  rackspace_managed  = "false"
+  notification_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
 }

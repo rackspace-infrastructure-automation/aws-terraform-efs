@@ -7,7 +7,7 @@
  *
  *```
  *module "efs" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.4"
+ *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.5"
  *
  *  name      = "EFSTest-minimal-options-unencrypted"
  *  encrypted = "false"
@@ -76,45 +76,26 @@ resource "aws_security_group_rule" "mount_egress" {
   security_group_id = "${aws_security_group.mount.id}"
 }
 
-locals {
-  sns_topic = "arn:aws:sns:${data.aws_region.current_region.name}:${data.aws_caller_identity.current_account.account_id}:rackspace-support-emergency"
+module "efs_burst_credits" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.0.1"
 
-  alarm_action_config = "${var.rackspace_managed ? "managed":"unmanaged"}"
+  alarm_description        = "EFS Burst Credits have dropped below ${var.cw_burst_credit_threshold} for ${var.cw_burst_credit_period} periods."
+  alarm_name               = "${var.name}-EFSBurstCredits"
+  comparison_operator      = "LessThanThreshold"
+  evaluation_periods       = "${var.cw_burst_credit_period}"
+  metric_name              = "BurstCreditBalance"
+  namespace                = "AWS/EFS"
+  notification_topic       = "${var.notification_topic}"
+  period                   = "3600"
+  rackspace_alarms_enabled = "${var.rackspace_alarms_enabled}"
+  rackspace_managed        = "${var.rackspace_managed}"
+  severity                 = "emergency"
+  statistic                = "Minimum"
+  threshold                = "${var.cw_burst_credit_threshold}"
 
-  alarm_actions = {
-    managed = ["${local.sns_topic}"]
-
-    unmanaged = "${var.custom_alarm_sns_topic}"
-  }
-
-  ok_action_config = "${var.rackspace_managed ? "managed":"unmanaged"}"
-
-  ok_actions = {
-    managed = ["${local.sns_topic}"]
-
-    unmanaged = "${var.custom_ok_sns_topic}"
-  }
-
-  alarm_setting = "${local.alarm_actions[local.alarm_action_config]}"
-  ok_setting    = "${local.ok_actions[local.ok_action_config]}"
-}
-
-resource "aws_cloudwatch_metric_alarm" "efs_burst_credits" {
-  alarm_name          = "${var.name}-EFSBurstCredits"
-  alarm_description   = "EFS Burst Credits have dropped below ${var.cw_burst_credit_threshold} for ${var.cw_burst_credit_period} periods."
-  namespace           = "AWS/EFS"
-  period              = "3600"
-  comparison_operator = "LessThanThreshold"
-  statistic           = "Minimum"
-  threshold           = "${var.cw_burst_credit_threshold}"
-  metric_name         = "BurstCreditBalance"
-  evaluation_periods  = "${var.cw_burst_credit_period}"
-  ok_actions          = ["${local.ok_setting}"]
-  alarm_actions       = ["${local.alarm_setting}"]
-
-  dimensions {
+  dimensions = [{
     FileSystemId = "${aws_efs_file_system.fs.id}"
-  }
+  }]
 }
 
 resource "aws_route53_record" "efs" {

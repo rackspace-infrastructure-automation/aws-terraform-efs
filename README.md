@@ -6,7 +6,7 @@ This module sets up a basic Elastic File System on AWS for an account in a speci
 
 ```
 module "efs" {
- source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.4"
+ source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.5"
 
  name      = "EFSTest-minimal-options-unencrypted"
  encrypted = "false"
@@ -23,8 +23,6 @@ Full working references are available at [examples](examples)
 |------|-------------|:----:|:-----:|:-----:|
 | create\_internal\_dns\_record | Whether or not to create a custom, internal DNS record for the EFS endpoint's generated DNS name. If \"true\", the `internal_zone_id` MUST be provided, and a specific `internal_record_name` MAY be provided. Default is \"false\". | string | `"false"` | no |
 | create\_parameter\_store\_entries | Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID. | string | `"true"` | no |
-| custom\_alarm\_sns\_topic | If not Rackspace managed, you can use custom SNS topics to send the Alarm actions to. | list | `<list>` | no |
-| custom\_ok\_sns\_topic | If not Rackspace managed, you can use custom SNS topics to send the OK actions to. | list | `<list>` | no |
 | custom\_tags | Optional tags to be applied on top of the base tags on all resources | map | `<map>` | no |
 | cw\_burst\_credit\_period | The number of periods over which the EFS Burst Credit level is compared to the specified threshold. | string | `"12"` | no |
 | cw\_burst\_credit\_threshold | The minimum EFS Burst Credit level before generating an alarm. | string | `"1000000000000"` | no |
@@ -38,9 +36,11 @@ Full working references are available at [examples](examples)
 | mount\_target\_subnets | Subnets in which the EFS mount target will be created. | list | `<list>` | no |
 | mount\_target\_subnets\_count | Number of `mount_target_subnets` (workaround for `count` not working fully within modules) | string | `"0"` | no |
 | name | A unique name (a maximum of 64 characters are allowed) used as reference when creating the Elastic File System to ensure idempotent file system creation. | string | n/a | yes |
+| notification\_topic | List of SNS Topic ARNs to use for customer notifications. | list | `<list>` | no |
 | performance\_mode | The file system performance mode. Can be either "generalPurpose" or "maxIO". | string | `"generalPurpose"` | no |
 | provisioned\_throughput\_in\_mibps | The throughput, measured in MiB/s, that you want to provision for the file system. **NOTE**: Setting a non-zero value will automatically enable \"provisioned\" throughput mode. To use \"bursting\" `throughput mode, leave this value set to \"0\". | string | `"0"` | no |
-| rackspace\_managed | Whether or not the filesystem will be managed by Rackspace support teams and create CloudWatch alarms that generate support tickets. | string | `"true"` | no |
+| rackspace\_alarms\_enabled | Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace_managed is set to false. | string | `"false"` | no |
+| rackspace\_managed | Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents. | string | `"true"` | no |
 | vpc\_id | The VPC ID. | string | n/a | yes |
 
 ## Outputs

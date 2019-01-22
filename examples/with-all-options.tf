@@ -28,7 +28,7 @@ resource "aws_sns_topic" "efs_burst_ok" {
 }
 
 module "efs" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.5"
 
   name                            = "EFSTest-with-all-options"
   performance_mode                = "maxIO"
