@@ -109,26 +109,22 @@ variable "cw_burst_credit_threshold" {
   default     = "1000000000000"
 }
 
+variable "notification_topic" {
+  description = "List of SNS Topic ARNs to use for customer notifications."
+  type        = "list"
+  default     = []
+}
+
 variable "rackspace_managed" {
-  description = <<EOF
-Whether or not the filesystem will be managed by Rackspace support teams and create CloudWatch alarms that generate
-support tickets.
-EOF
-
-  type    = "string"
-  default = "true"
+  description = "Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents."
+  type        = "string"
+  default     = true
 }
 
-variable "custom_alarm_sns_topic" {
-  description = "If not Rackspace managed, you can use custom SNS topics to send the Alarm actions to."
-  type        = "list"
-  default     = []
-}
-
-variable "custom_ok_sns_topic" {
-  description = "If not Rackspace managed, you can use custom SNS topics to send the OK actions to."
-  type        = "list"
-  default     = []
+variable "rackspace_alarms_enabled" {
+  description = "Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace_managed is set to false."
+  type        = "string"
+  default     = false
 }
 
 #######################
