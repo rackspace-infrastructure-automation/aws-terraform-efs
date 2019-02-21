@@ -49,11 +49,15 @@ resource "aws_efs_mount_target" "mount" {
 }
 
 resource "aws_security_group" "mount" {
-  name        = "${var.name}"
+  name_prefix = "${var.name}-EfsSecurityGroup"
   description = "Security group dedicated to the ${var.name} EFS mount target."
   vpc_id      = "${var.vpc_id}"
 
-  tags = "${merge(local.base_tags, map("Name", var.name), var.custom_tags)}"
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = "${merge(local.base_tags, map("Name", "${var.name}-EfsSecurityGroup"), var.custom_tags)}"
 }
 
 resource "aws_security_group_rule" "mount_ingress" {
