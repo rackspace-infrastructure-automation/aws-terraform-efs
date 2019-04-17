@@ -1,20 +1,20 @@
 /**
  * # aws-terraform-efs
  *
- *This module sets up a basic Elastic File System on AWS for an account in a specific region.
+ * This module sets up a basic Elastic File System on AWS for an account in a specific region.
  *
- *## Basic Usage
+ * ## Basic Usage
  *
- *```
- *module "efs" {
- *  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.5"
+ * ```HCL
+ * module "efs" {
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.7"
  *
- *  name      = "EFSTest-minimal-options-unencrypted"
- *  encrypted = "false"
- *
- *  vpc_id = "${module.vpc.vpc_id}"
- *}
- *```
+ *   encrypted       = "false"
+ *   name            = "EFSTest-minimal-options-unencrypted"
+ *   security_groups = ["${aws_security_group.efs.id}"]
+ *   vpc_id          = "${module.vpc.vpc_id}"
+ * }
+ * ```
  *
  * Full working references are available at [examples](examples)
  */
@@ -45,39 +45,7 @@ resource "aws_efs_mount_target" "mount" {
 
   file_system_id  = "${aws_efs_file_system.fs.id}"
   subnet_id       = "${element(var.mount_target_subnets, count.index)}"
-  security_groups = ["${aws_security_group.mount.id}"]
-}
-
-resource "aws_security_group" "mount" {
-  name_prefix = "${var.name}-EfsSecurityGroup"
-  description = "Security group dedicated to the ${var.name} EFS mount target."
-  vpc_id      = "${var.vpc_id}"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  tags = "${merge(local.base_tags, map("Name", "${var.name}-EfsSecurityGroup"), var.custom_tags)}"
-}
-
-resource "aws_security_group_rule" "mount_ingress" {
-  count = "${var.mount_ingress_security_groups_count}"
-
-  type                     = "ingress"
-  protocol                 = "tcp"
-  from_port                = 2049
-  to_port                  = 2049
-  security_group_id        = "${aws_security_group.mount.id}"
-  source_security_group_id = "${element(var.mount_ingress_security_groups, count.index)}"
-}
-
-resource "aws_security_group_rule" "mount_egress" {
-  type              = "egress"
-  protocol          = -1
-  from_port         = 0
-  to_port           = 0
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.mount.id}"
+  security_groups = ["${var.security_groups}"]
 }
 
 module "efs_burst_credits" {

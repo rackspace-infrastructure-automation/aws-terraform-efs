@@ -76,21 +76,14 @@ variable "mount_target_subnets_count" {
   default     = "0"
 }
 
+variable "security_groups" {
+  description = "A list of EC2 security groups to assign to this resource"
+  type        = "list"
+}
+
 variable "vpc_id" {
   description = "The VPC ID."
   type        = "string"
-}
-
-variable "mount_ingress_security_groups" {
-  description = "List of security group IDs that should be granted ingress for the EFS mount target."
-  type        = "list"
-  default     = []
-}
-
-variable "mount_ingress_security_groups_count" {
-  description = "Number of `mount_ingress_security_groups` (workaround for `count` not working fully within modules)"
-  type        = "string"
-  default     = "0"
 }
 
 ################################
