@@ -17,6 +17,30 @@ module "vpc" {
   vpc_name = "EFSTest-with-all-options-${random_string.res_name.result}"
 }
 
+resource "aws_security_group" "efs" {
+  name_prefix = "EFS-"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  description = "Access to EFS mount targets"
+
+  tags = {
+    Name = "EFS"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_security_group_rule" "efs_egress_all" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.efs.id}"
+}
+
 resource "aws_kms_key" "efs-test-with-all-options" {
   description             = "EFS Test with all options"
   deletion_window_in_days = 7
@@ -47,10 +71,8 @@ module "efs" {
     foo = "bar"
   }
 
-  vpc_id = "${module.vpc.vpc_id}"
-
-  mount_ingress_security_groups       = ["${module.vpc.default_sg}"]
-  mount_ingress_security_groups_count = 1
+  security_groups = ["${aws_security_group.efs.id}"]
+  vpc_id          = "${module.vpc.vpc_id}"
 
   mount_target_subnets       = ["${module.vpc.private_subnets}"]
   mount_target_subnets_count = 2

@@ -31,15 +31,6 @@ output "mount_target_network_interface_id" {
   description = "The ID of the network interface automatically created for the mount target"
 }
 
-#########################################
-# EFS Mount Target Security Group Outputs
-#########################################
-
-output "mount_target_security_group_id" {
-  value       = "${module.efs.mount_target_security_group_id}"
-  description = "ID of the security group created for the EFS mount target"
-}
-
 #######################
 # Conditional Resources
 #######################
