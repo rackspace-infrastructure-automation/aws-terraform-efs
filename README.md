@@ -46,6 +46,7 @@ Full working references are available at [examples](examples)
 
 | Name | Description |
 |------|-------------|
+| filesystem\_arn | The ARN for the filesystem |
 | filesystem\_dns\_name | The DNS name for the filesystem |
 | filesystem\_dns\_name\_ssm\_parameter | Name of the SSM parameter containing the captured filesystem DNS name |
 | filesystem\_id | The ID that identifies the file system |

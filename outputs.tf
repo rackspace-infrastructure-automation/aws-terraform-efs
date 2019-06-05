@@ -12,6 +12,11 @@ output "filesystem_dns_name" {
   description = "The DNS name for the filesystem"
 }
 
+output "filesystem_arn" {
+  value       = "${aws_efs_file_system.fs.arn}"
+  description = "The ARN for the filesystem"
+}
+
 ##########################
 # EFS Mount Target Outputs
 ##########################

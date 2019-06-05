@@ -68,7 +68,7 @@ resource "aws_security_group_rule" "efs_ingress_tcp_2049_sftp" {
 }
 
 module "efs" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.7"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.8"
 
   encrypted       = "false"
   name            = "EFSTest-minimal-options-unencrypted"
