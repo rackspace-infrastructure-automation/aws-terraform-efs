@@ -104,6 +104,6 @@ module "efs" {
   create_internal_dns_record     = "true"
   internal_zone_id               = "${aws_route53_zone.internal.zone_id}"
 
-  rackspace_managed      = "false"
+  rackspace_managed  = "false"
   notification_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
 }
