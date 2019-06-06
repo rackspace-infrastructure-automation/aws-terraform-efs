@@ -81,10 +81,6 @@ resource "aws_sns_topic" "efs_burst_alarm" {
   name = "EFS-with-all-options_ALARM"
 }
 
-resource "aws_sns_topic" "efs_burst_ok" {
-  name = "EFS-with-all-options_OK"
-}
-
 module "efs" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-efs//?ref=v0.0.8"
 
@@ -109,6 +105,5 @@ module "efs" {
   internal_zone_id               = "${aws_route53_zone.internal.zone_id}"
 
   rackspace_managed      = "false"
-  custom_alarm_sns_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
-  custom_ok_sns_topic    = ["${aws_sns_topic.efs_burst_ok.arn}"]
+  notification_topic = ["${aws_sns_topic.efs_burst_alarm.arn}"]
 }
