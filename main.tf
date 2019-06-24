@@ -17,6 +17,9 @@
  * ```
  *
  * Full working references are available at [examples](examples)
+ * ## Other TF Modules Used
+ * Using [aws-terraform-cloudwatch_alarm](https://github.com/rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm) to create the following CloudWatch Alarms:
+ * 	- efs_burst_credits
  */
 
 data "aws_region" "current_region" {}
