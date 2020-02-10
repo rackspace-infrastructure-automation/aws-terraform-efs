@@ -20,6 +20,19 @@
  * ## Other TF Modules Used
  * Using [aws-terraform-cloudwatch_alarm](https://github.com/rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm) to create the following CloudWatch Alarms:
  * 	- efs_burst_credits
+ *
+ * ## Terraform 0.12 upgrade
+ *
+ * Several changes were required while adding terraform 0.12 compatibility.  The following changes should be
+ * made when upgrading from a previous release to version 0.12.0 or higher.
+ *
+ * ### Module variables
+ *
+ * The following module variables were updated to better meet current Rackspace style guides:
+ *
+ * - `custom_tags` -> `tags`
+ * - `create_internal_dns_record` -> `create_internal_zone_record`
+ *
  */
 
 terraform {
@@ -45,18 +58,18 @@ locals {
 
 resource "aws_efs_file_system" "fs" {
   creation_token                  = var.name
+  encrypted                       = var.encrypted
+  kms_key_id                      = var.kms_key_arn
   performance_mode                = var.performance_mode
   provisioned_throughput_in_mibps = var.provisioned_throughput_in_mibps
   throughput_mode                 = var.provisioned_throughput_in_mibps == 0 ? "bursting" : "provisioned"
-  encrypted                       = var.encrypted
-  kms_key_id                      = var.kms_key_arn
 
   tags = merge(
     local.base_tags,
     {
       "Name" = var.name
     },
-    var.custom_tags,
+    var.tags,
   )
 }
 
@@ -64,12 +77,12 @@ resource "aws_efs_mount_target" "mount" {
   count = var.mount_target_subnets_count
 
   file_system_id  = aws_efs_file_system.fs.id
-  subnet_id       = element(var.mount_target_subnets, count.index)
   security_groups = var.security_groups
+  subnet_id       = element(var.mount_target_subnets, count.index)
 }
 
 module "efs_burst_credits" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.0"
 
   alarm_description        = "EFS Burst Credits have dropped below ${var.cw_burst_credit_threshold} for ${var.cw_burst_credit_period} periods."
   alarm_name               = "${var.name}-EFSBurstCredits"
@@ -93,13 +106,13 @@ module "efs_burst_credits" {
 }
 
 resource "aws_route53_record" "efs" {
-  count = var.create_internal_dns_record ? 1 : 0
+  count = var.create_internal_zone_record ? 1 : 0
 
-  zone_id = var.internal_zone_id
-  name    = var.internal_record_name != "" ? var.internal_record_name : "efs-${var.name}-${var.environment}"
-  type    = "CNAME"
-  ttl     = "300"
+  name    = var.internal_record_name != "" ? var.internal_record_name : "${var.environment}-${var.name}-efs"
   records = [aws_efs_file_system.fs.dns_name]
+  ttl     = "300"
+  type    = "CNAME"
+  zone_id = var.internal_zone_id
 }
 
 resource "aws_ssm_parameter" "efs_filesystem_id" {

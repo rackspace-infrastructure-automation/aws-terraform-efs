@@ -3,38 +3,38 @@ variable "create_internal_zone_record" {
 Create Route 53 internal zone record for the resource Default is \"false\".
 EOF
 
-  type    = string
-  default = "false"
+  type    = bool
+  default = false
 }
 
 variable "create_parameter_store_entries" {
   description = "Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID."
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
 }
 
-variable "custom_tags" {
-  description = "Optional tags to be applied on top of the base tags on all resources."
+variable "tags" {
+  description = "A mapping of tags applied to resources created by the module"
   type        = map(string)
   default     = {}
 }
 
 variable "cw_burst_credit_period" {
   description = "The number of periods over which the EFS Burst Credit level is compared to the specified threshold."
-  type        = string
-  default     = "12"
+  type        = number
+  default     = 12
 }
 
 variable "cw_burst_credit_threshold" {
   description = "The minimum EFS Burst Credit level before generating an alarm."
-  type        = string
-  default     = "1000000000000"
+  type        = number
+  default     = 1000000000000
 }
 
 variable "encrypted" {
   description = "Whether or not the disk should be encrypted."
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
 }
 
 variable "environment" {
