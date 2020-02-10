@@ -4,13 +4,13 @@
 
 variable "environment" {
   description = "Application environment for which this network is being created. e.g. Development/Production"
-  type        = "string"
+  type        = string
   default     = "Development"
 }
 
 variable "custom_tags" {
   description = "Optional tags to be applied on top of the base tags on all resources"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
@@ -24,12 +24,13 @@ A unique name (a maximum of 64 characters are allowed) used as reference when cr
 idempotent file system creation.
 EOF
 
-  type = "string"
+
+  type = string
 }
 
 variable "performance_mode" {
   description = "The file system performance mode. Can be either \"generalPurpose\" or \"maxIO\"."
-  type        = "string"
+  type        = string
   default     = "generalPurpose"
 }
 
@@ -40,13 +41,14 @@ The throughput, measured in MiB/s, that you want to provision for the file syste
 `throughput mode, leave this value set to \"0\".
 EOF
 
-  type    = "string"
+
+  type    = string
   default = "0"
 }
 
 variable "encrypted" {
   description = "Whether or not the disk should be encrypted."
-  type        = "string"
+  type        = string
   default     = "true"
 }
 
@@ -56,7 +58,8 @@ The ARN for the KMS key to use for encrypting the disk. If specified, `encrypted
 blank and `encrypted` is set to \"true\", Terraform will use the default `aws/elasticfilesystem` KMS key.
 EOF
 
-  type    = "string"
+
+  type    = string
   default = ""
 }
 
@@ -66,24 +69,24 @@ EOF
 
 variable "mount_target_subnets" {
   description = "Subnets in which the EFS mount target will be created."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "mount_target_subnets_count" {
   description = "Number of `mount_target_subnets` (workaround for `count` not working fully within modules)"
-  type        = "string"
+  type        = string
   default     = "0"
 }
 
 variable "security_groups" {
   description = "A list of EC2 security groups to assign to this resource"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "vpc_id" {
   description = "The VPC ID."
-  type        = "string"
+  type        = string
 }
 
 ################################
@@ -92,31 +95,31 @@ variable "vpc_id" {
 
 variable "cw_burst_credit_period" {
   description = "The number of periods over which the EFS Burst Credit level is compared to the specified threshold."
-  type        = "string"
+  type        = string
   default     = "12"
 }
 
 variable "cw_burst_credit_threshold" {
   description = "The minimum EFS Burst Credit level before generating an alarm."
-  type        = "string"
+  type        = string
   default     = "1000000000000"
 }
 
 variable "notification_topic" {
   description = "List of SNS Topic ARNs to use for customer notifications."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "rackspace_managed" {
   description = "Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents."
-  type        = "string"
+  type        = string
   default     = true
 }
 
 variable "rackspace_alarms_enabled" {
   description = "Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace_managed is set to false."
-  type        = "string"
+  type        = string
   default     = false
 }
 
@@ -126,7 +129,7 @@ variable "rackspace_alarms_enabled" {
 
 variable "create_parameter_store_entries" {
   description = "Whether or not to create EC2 Parameter Store entries to expose the EFS DNS name and Filesystem ID."
-  type        = "string"
+  type        = string
   default     = "true"
 }
 
@@ -136,7 +139,8 @@ Whether or not to create a custom, internal DNS record for the EFS endpoint's ge
 `internal_zone_id` MUST be provided, and a specific `internal_record_name` MAY be provided. Default is \"false\".
 EOF
 
-  type    = "string"
+
+  type    = string
   default = "false"
 }
 
@@ -146,7 +150,8 @@ A Route 53 Internal Hosted Zone ID. If provided, a DNS record will be created fo
 can be used to reference the mount target.
 EOF
 
-  type    = "string"
+
+  type    = string
   default = ""
 }
 
@@ -156,6 +161,8 @@ If `internal_zone_id` is provided, Terraform will create a DNS record using the 
 subdomain. If no `internal_record_name` is provided, the convention \"efs-<name>-<environment>\" will be used.
 EOF
 
-  type    = "string"
+
+  type    = string
   default = ""
 }
+

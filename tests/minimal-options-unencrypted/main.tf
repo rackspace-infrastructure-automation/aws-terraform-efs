@@ -19,7 +19,7 @@ module "vpc" {
 
 resource "aws_security_group" "efs" {
   name_prefix = "EFS-"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = module.vpc.vpc_id
 
   description = "Access to EFS mount targets"
 
@@ -38,7 +38,7 @@ resource "aws_security_group_rule" "efs_egress_all" {
   to_port           = 65535
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.efs.id}"
+  security_group_id = aws_security_group.efs.id
 }
 
 module "efs" {
@@ -47,6 +47,6 @@ module "efs" {
   name      = "EFSTest-minimal-options-${random_string.res_name.result}"
   encrypted = "false"
 
-  security_groups = ["${aws_security_group.efs.id}"]
-  vpc_id          = "${module.vpc.vpc_id}"
+  security_groups = [aws_security_group.efs.id]
+  vpc_id          = module.vpc.vpc_id
 }

@@ -11,7 +11,7 @@ module "vpc" {
 
 resource "aws_security_group" "sftp" {
   name_prefix = "SFTP-"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = module.vpc.vpc_id
 
   description = "Access to SFTP instance(s)"
 
@@ -30,12 +30,12 @@ resource "aws_security_group_rule" "sftp_egress_all" {
   to_port           = 65535
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sftp.id}"
+  security_group_id = aws_security_group.sftp.id
 }
 
 resource "aws_security_group" "efs" {
   name_prefix = "EFS-"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = module.vpc.vpc_id
 
   description = "Access to EFS mount targets"
 
@@ -54,7 +54,7 @@ resource "aws_security_group_rule" "efs_egress_all" {
   to_port           = 65535
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.efs.id}"
+  security_group_id = aws_security_group.efs.id
 }
 
 resource "aws_security_group_rule" "efs_ingress_tcp_2049_sftp" {
@@ -62,8 +62,8 @@ resource "aws_security_group_rule" "efs_ingress_tcp_2049_sftp" {
   from_port                = 2049
   to_port                  = 2049
   protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.sftp.id}"
-  security_group_id        = "${aws_security_group.efs.id}"
+  source_security_group_id = aws_security_group.sftp.id
+  security_group_id        = aws_security_group.efs.id
   description              = "Ingress from sftp (TCP:2049)"
 }
 
@@ -72,6 +72,6 @@ module "efs" {
 
   encrypted       = "false"
   name            = "EFSTest-minimal-options-unencrypted"
-  security_groups = ["${aws_security_group.efs.id}"]
-  vpc_id          = "${module.vpc.vpc_id}"
+  security_groups = [aws_security_group.efs.id]
+  vpc_id          = module.vpc.vpc_id
 }
