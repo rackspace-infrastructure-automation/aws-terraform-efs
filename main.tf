@@ -22,6 +22,14 @@
  * 	- efs_burst_credits
  */
 
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    aws = ">= 2.1.0"
+  }
+}
+
 data "aws_region" "current_region" {
 }
 
@@ -109,4 +117,3 @@ resource "aws_ssm_parameter" "efs_fqdn" {
   type  = "String"
   value = aws_efs_file_system.fs.dns_name
 }
-
