@@ -36,7 +36,7 @@ The following module variables were updated to better meet current Rackspace sty
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.1.0 |
+| aws | >= 2.7.0 |
 
 ## Inputs
 

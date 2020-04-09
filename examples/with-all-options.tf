@@ -1,5 +1,5 @@
 provider "aws" {
-  version = "~> 2.2"
+  version = "~> 2.7"
   region  = "us-west-2"
 }
 
@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "efs_ingress_tcp_2049_sftp" {
   type                     = "ingress"
 }
 
-resource "aws_kms_key" "efs-test-with-all-options" {
+resource "aws_kms_key" "efs_test_with_all_options" {
   deletion_window_in_days = 7
   description             = "EFS Test with all options"
 }
@@ -86,7 +86,7 @@ module "efs" {
   create_parameter_store_entries  = false
   encrypted                       = true
   internal_zone_id                = aws_route53_zone.internal.zone_id
-  kms_key_arn                     = aws_kms_key.efs-test-with-all-options.arn
+  kms_key_arn                     = aws_kms_key.efs_test_with_all_options.arn
   mount_target_subnets            = [module.vpc.private_subnets]
   mount_target_subnets_count      = 2
   name                            = "EFSTest-with-all-options"
