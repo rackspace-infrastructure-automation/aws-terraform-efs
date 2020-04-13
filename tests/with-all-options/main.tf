@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.2"
+  version = "~> 2.7"
   region  = "us-west-2"
 }
 
@@ -44,7 +44,7 @@ resource "aws_security_group_rule" "efs_egress_all" {
   type              = "egress"
 }
 
-resource "aws_kms_key" "efs-test-with-all-options" {
+resource "aws_kms_key" "efs_test_with_all_options" {
   description             = "EFS Test with all options"
   deletion_window_in_days = 7
 }
@@ -68,7 +68,7 @@ module "efs" {
   create_parameter_store_entries  = false
   encrypted                       = true
   internal_zone_id                = aws_route53_zone.internal.zone_id
-  kms_key_arn                     = aws_kms_key.efs-test-with-all-options.arn
+  kms_key_arn                     = aws_kms_key.efs_test_with_all_options.arn
   mount_target_subnets            = module.vpc.private_subnets
   mount_target_subnets_count      = 2
   name                            = "${random_string.res_name.result}-EFSTest-with-all-options"
