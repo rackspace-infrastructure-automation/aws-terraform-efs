@@ -82,7 +82,7 @@ resource "aws_efs_mount_target" "mount" {
 }
 
 module "efs_burst_credits" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=0.12.6"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.6"
 
   alarm_description        = "EFS Burst Credits have dropped below ${var.cw_burst_credit_threshold} for ${var.cw_burst_credit_period} periods."
   alarm_name               = "${var.name}-EFSBurstCredits"
