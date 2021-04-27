@@ -49,7 +49,7 @@ The following module variables were updated to better meet current Rackspace sty
 
 | Name | Source | Version |
 |------|--------|---------|
-| efs_burst_credits | git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=0.12.6 |  |
+| efs_burst_credits | git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.6 |  |
 
 ## Resources
 
