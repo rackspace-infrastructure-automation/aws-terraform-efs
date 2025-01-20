@@ -1,3 +1,7 @@
+> [!CAUTION]
+> This project is end of life. This repo will be deleted on June 2nd 2025.
+
+
 # aws-terraform-efs
 
 This module sets up a basic Elastic File System on AWS for an account in a specific region.
